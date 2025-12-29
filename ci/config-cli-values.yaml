@@ -1,0 +1,73 @@
+production: true
+proxyHeaders: xforwarded
+
+ingress:
+  enabled: true
+  hostname: keycloak.local
+
+# needed to keep keycloak from running out of memory
+extraEnvVars:
+  - name: JAVA_OPTS_KC_HEAP
+    value: -Xmx256m
+
+keycloakConfigCli:
+  enabled: true
+  configuration:
+    # a realm with a client, user and some realm settings
+    realm1.yaml: |
+      realm: realm1
+      clients: []
+    realm2.yaml: |
+      registrationAllowed: false
+      resetPasswordAllowed: true
+      passwordPolicy: length(4)
+      enabled: true
+      realm: realm2
+      clients: []
+      users:
+      - username: testuser
+        enabled: true
+        credentials:
+          - type: password
+            value: "test"
+      clients:
+      - name: Test client
+        clientId: test-client
+        directAccessGrantsEnabled: false
+        protocol: openid-connect
+        baseUrl: https://testclient.example.com/
+        publicClient: true
+        standardFlowEnabled: true
+        defaultClientScopes:
+          - basic
+          - profile
+        redirectUris:
+          - https://testclient.example.com/*
+        attributes:
+          post.logout.redirect.uris: https://testclient.example.com/signout
+          pkce.code.challenge.method: S256
+        protocolMappers:
+          - name: realm roles
+            protocolMapper: oidc-usermodel-realm-role-mapper
+            protocol: openid-connect
+            consentRequired: false
+            config:
+              access.token.claim: "true"
+              id.token.claim: "true"
+              claim.name: realm_access.roles
+              jsonType.label: String
+              multivalued: "true"
+      - clientId: secret-test-client
+        clientAuthenticatorType: client-secret
+        secret: testsecret123
+        notBefore: 0
+        bearerOnly: false
+        consentRequired: false
+        standardFlowEnabled: false
+        implicitFlowEnabled: false
+        directAccessGrantsEnabled: false
+        serviceAccountsEnabled: true
+        publicClient: false
+        frontchannelLogout: false
+        protocol: openid-connect
+        fullScopeAllowed: true

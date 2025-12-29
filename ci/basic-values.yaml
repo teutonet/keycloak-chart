@@ -1,0 +1,6 @@
+extraEnvVars:
+  # needed to keep keycloak from running out of memory
+  - name: JAVA_OPTS_KC_HEAP
+    value: -Xmx256m
+  - name: KEYCLOAK_EXTRA_ARGS
+    value: --hostname-strict=false

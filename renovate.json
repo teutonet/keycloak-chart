@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "group:allNonMajor",
+    ":prHourlyLimitNone",
+    "github>teutonet/renovate-config:regex-managers"
+  ],
+  "labels": [
+    "renovate"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": [
+      "before 4am on tuesday"
+    ]
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "digest"
+      ],
+      "extends": [
+        "schedule:weekly"
+      ],
+      "automerge": true
+    }
+  ],
+  "branchConcurrentLimit": 20,
+  "prConcurrentLimit": 20
+}
