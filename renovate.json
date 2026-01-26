@@ -27,6 +27,17 @@
         "schedule:weekly"
       ],
       "automerge": true
+    },
+    {
+      "packageRules": [
+        {
+          "matchFileNames": [
+            "Chart.yaml",
+            "values.yaml"
+          ],
+          "semanticCommitType": "feat"
+        }
+      ]
     }
   ],
   "branchConcurrentLimit": 20,
