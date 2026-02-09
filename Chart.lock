@@ -1,9 +1,9 @@
 dependencies:
 - name: postgres
   repository: oci://registry-1.docker.io/cloudpirates
-  version: 0.15.0
+  version: 0.15.5
 - name: common
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 2.34.0
-digest: sha256:08081c5ae68d1b928a0e0cb5a2d90b20da94db9cf381dc3b826620cbacdd21dd
-generated: "2026-02-03T01:35:35.520846972Z"
+digest: sha256:e950e33c9e93e27214480f1bf67f1bee97eb3905a983a3125187e8f3be4f41a6
+generated: "2026-02-09T01:36:26.057402042Z"
