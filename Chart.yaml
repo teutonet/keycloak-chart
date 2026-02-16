@@ -4,7 +4,7 @@
 annotations:
   licenses: Apache-2.0
 apiVersion: v2
-appVersion: 26.5.2 # renovate: datasource=docker depName=docker.io/keycloak/keycloak
+appVersion: 26.5.3 # renovate: datasource=docker depName=docker.io/keycloak/keycloak
 dependencies:
   - condition: postgres.enabled
     name: postgres
