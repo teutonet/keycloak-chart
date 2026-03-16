@@ -1003,7 +1003,7 @@ keycloakConfigCli:
   image:
     registry: quay.io
     repository: adorsys/keycloak-config-cli
-    tag: 6.4.1-26
+    tag: 6.5.0-26
     digest: ""
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
