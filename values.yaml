@@ -89,7 +89,7 @@ useHelmHooks: true
 image:
   registry: docker.io
   repository: keycloak/keycloak
-  tag: 26.6.0
+  tag: 26.6.1
   digest: ""
   ## Specify a imagePullPolicy
   ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
