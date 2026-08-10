@@ -4,12 +4,12 @@
 annotations:
   licenses: Apache-2.0
 apiVersion: v2
-appVersion: 26.7.0 # renovate: datasource=docker depName=docker.io/keycloak/keycloak
+appVersion: 26.7.1 # renovate: datasource=docker depName=docker.io/keycloak/keycloak
 dependencies:
   - condition: postgres.enabled
     name: postgres
     repository: oci://registry-1.docker.io/cloudpirates
-    version: 0.19.12
+    version: 0.19.13
   - name: common
     repository: oci://registry-1.docker.io/bitnamicharts
     tags:
