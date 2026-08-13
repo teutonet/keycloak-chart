@@ -1,0 +1,68 @@
+{{- /*
+Copyright Broadcom, Inc. All Rights Reserved.
+SPDX-License-Identifier: APACHE-2.0
+*/}}
+
+{{- if .Values.httpRoute.enabled }}
+{{- $serviceName := include "common.names.fullname" . -}}
+{{- /* HttpRoute does not support named ports. To avoid dealing with magic numbers, we can use the port mapping at "service.ports" */ -}}
+{{- $servicePort := .Values.httpRoute.servicePort -}}
+{{- if kindIs "string" .Values.httpRoute.servicePort -}}
+  {{- $servicePort = get .Values.service.ports .Values.httpRoute.servicePort -}}
+{{- end -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "common.names.fullname" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  {{- $labels := include "common.tplvalues.merge" (dict "values" (list .Values.httpRoute.labels .Values.commonLabels) "context" .) }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" $labels "context" .) | nindent 4 }}
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/part-of: keycloak
+  {{- if or .Values.httpRoute.annotations .Values.commonAnnotations }}
+  {{- $annotations := include "common.tplvalues.merge" (dict "values" (list .Values.httpRoute.annotations .Values.commonAnnotations) "context" .) }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" $annotations "context" .) | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.httpRoute.parentRefs }}
+  parentRefs:
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  hostnames:
+  - {{ tpl .Values.httpRoute.hostname $ | quote }}
+  rules:
+  {{- if .Values.httpRoute.rules }}
+  {{- range .Values.httpRoute.rules }}
+  - {{- if .name }}
+    name: {{ .name | quote }}
+    {{- end }}
+    matches:
+    {{- if .matches }}
+    {{- toYaml .matches | nindent 4 }}
+    {{- else }}
+    - path:
+        type: PathPrefix
+        value: /
+    {{- end }}
+    backendRefs:
+    {{- if .backendRefs }}
+    {{- toYaml .backendRefs | nindent 4 }}
+    {{- else }}
+    - name: {{ $serviceName }}
+      port: {{ $servicePort }}
+    {{- end }}
+    {{- if .filters }}
+    filters:
+    {{- toYaml .filters | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- else }}
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: {{ $serviceName }}
+      port: {{ $servicePort }}
+  {{- end }}
+{{- end }}
