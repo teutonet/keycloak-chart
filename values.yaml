@@ -181,7 +181,7 @@ trustedCertsExistingSecret: ""
 ## @param adminRealm Name of the admin realm
 ##
 adminRealm: "master"
-## @param proxyHeaders Set Keycloak proxy headers
+## @param proxyHeaders Set Keycloak proxy headers, should be set to xforwarded when httpRoute.enabled is true
 ##
 proxyHeaders: ""
 ## @param hostnameStrict Disables dynamically resolving the hostname from request headers (ignored if ingress.enabled is false).
@@ -715,6 +715,49 @@ ingress:
   ##             name: http
   ##
   extraRules: []
+# Gateway API HTTPRoute configuration
+# Ref: https://gateway-api.sigs.k8s.io/api-types/httproute/
+httpRoute:
+  ## @param httpRoute.enabled Enable httpRoute record generation for Keycloak
+  ##
+  enabled: false
+  ## @param httpRoute.hostname Default host for the httpRoute record (evaluated as template)
+  ##
+  hostname: keycloak.local
+  ## @param httpRoute.tls Tell keycloak all its external urls use https instead of http
+  ## TLS handling needs to be done at the gateway level
+  tls: false
+  ## @param httpRoute.path Default path, only update this if you know what you're doing
+  path: /
+  ## @param httpRoute.parentRefs The name of the Gateway resource to attach the HTTPRoute to
+  ## Example:
+  ## parentRefs:
+  ## - kind: Gateway
+  ##   name: gateway
+  ##   namespace: gateway-system
+  ##   sectionName: my-gateway-https-listener-name
+  ##
+  ## https://gateway-api.sigs.k8s.io/reference/spec/#parentreference
+  parentRefs: []
+  ## @param httpRoute.servicePort Backend service port to use
+  ## Default is http. Alternative is https.
+  ##
+  servicePort: http
+  ## @param httpRoute.rules HTTPRoute rule configuration
+  ## backendRef points to the main keycloak service by default
+  ## use HttpRoute filters here
+  ## Example:
+  ## rules:
+  ## - name: service # optional
+  ##   matches:
+  ##   - path:
+  ##       type: PathPrefix
+  ##       value: /
+  rules: []
+  ## @param httpRoute.labels Additional labels to add to the HTTPRoute
+  labels: {}
+  ## @param httpRoute.annotations Additional annotations to add to the HTTPRoute
+  annotations: {}
 ## Network Policy configuration
 ## ref: https://kubernetes.io/docs/concepts/services-networking/network-policies/
 ##
