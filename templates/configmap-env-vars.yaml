@@ -25,15 +25,16 @@ data:
   {{- if .Values.proxyHeaders }}
   KC_PROXY_HEADERS: {{ .Values.proxyHeaders | quote }}
   {{- end }}
-  {{- if .Values.ingress.enabled }}
+{{- if or .Values.ingress.enabled .Values.httpRoute.enabled }}
   KC_HOSTNAME_STRICT: {{ ternary "true" "false" .Values.hostnameStrict | quote }}
-{{- if .Values.ingress.hostname }}
-  {{- $path := tpl .Values.ingress.path . }}
+  {{- $base := ternary .Values.ingress .Values.httpRoute .Values.ingress.enabled }}
+  {{- $path := tpl $base.path . }}
+  {{- if .Values.ingress.hostname }}
   {{- if and (eq .Values.ingress.controller "gce") (hasSuffix "*" $path) }}
     {{- $path = trimSuffix "*" $path }}
   {{- end }}
-  KC_HOSTNAME: {{ printf "%s://%s%s" (ternary "https" "http" (or .Values.ingress.tls (not (empty .Values.proxyHeaders)))) (tpl .Values.ingress.hostname .) $path | quote }}
   {{- end }}
+  KC_HOSTNAME: {{ printf "%s://%s%s" (ternary "https" "http" (or $base.tls (not (empty .Values.proxyHeaders)))) (tpl $base.hostname .) $path | quote }}
 {{- end }}
   KC_METRICS_ENABLED: {{ ternary "true" "false" .Values.metrics.enabled | quote }}
   KC_DB: postgres
