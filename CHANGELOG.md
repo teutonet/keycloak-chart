@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/teutonet/keycloak-chart/compare/v1.3.0...v1.4.0) (2026-09-21)
+
+
+### Features
+
+* **deps:** update docker.io/keycloak/keycloak docker tag to v26.7.4 ([#50](https://github.com/teutonet/keycloak-chart/issues/50)) ([6bbb647](https://github.com/teutonet/keycloak-chart/commit/6bbb64734149eb679143a0e4c397022256a33042))
+
 ## [1.3.0](https://github.com/teutonet/keycloak-chart/compare/v1.2.0...v1.3.0) (2026-09-14)
 
 
