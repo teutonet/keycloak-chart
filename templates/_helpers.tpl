@@ -237,6 +237,7 @@ Compile all warnings into a single message.
 {{- $messages := append $messages (include "keycloak.validateValues.database" .) -}}
 {{- $messages := append $messages (include "keycloak.validateValues.tls" .) -}}
 {{- $messages := append $messages (include "keycloak.validateValues.production" .) -}}
+{{- $messages := append $messages (include "keycloak.validateValues.ingressHttpRoute" .) -}}
 {{- $messages := without $messages "" -}}
 {{- $message := join "\n" $messages -}}
 
@@ -273,5 +274,13 @@ keycloak: tls.enabled
 keycloak: production
     In order to enable Production mode, you also need to enable
     HTTPS/TLS (--set tls.enabled=true) or use proxy headers (--set proxyHeaders=FOO).
+{{- end -}}
+{{- end -}}
+
+{{/* Validate values of Keycloak - Only either ingress or httpRoute */}}
+{{- define "keycloak.validateValues.ingressHttpRoute" -}}
+{{- if and .Values.ingress.enabled .Values.httpRoute.enabled -}}
+keycloak: ingress.enabled
+    Only one of ingress.enabled and httpRoute.enabled can be set at the same time.
 {{- end -}}
 {{- end -}}

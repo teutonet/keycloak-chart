@@ -1,0 +1,22 @@
+production: true
+proxyHeaders: xforwarded
+
+httpRoute:
+  enabled: true
+  hostname: keycloak.local
+  parentRefs:
+    - kind: Gateway
+      name: gateway
+      sectionName: https
+  rules:
+    - filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set:
+            - name: my-header
+              value: bar
+
+# needed to keep keycloak from running out of memory
+extraEnvVars:
+  - name: JAVA_OPTS_KC_HEAP
+    value: -Xmx256m
