@@ -34,7 +34,9 @@ jobs:
 
       - name: Install Gateway API CRDs
         run: |
-          kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/standard-install.yaml
+          kubectl apply --server-side -f https://github.com/kubernetes-sigs/gateway-api/releases/download/$GATEWAY_CRD_VERSION/standard-install.yaml
+        env:
+          GATEWAY_CRD_VERSION: v1.6.3 # renovate: datasource=github-tags depName=kubernetes-sigs/gateway-api
 
       - name: Run chart-testing (install)
         run: ct install --charts . --upgrade --target-branch ${{ github.event.repository.default_branch }}
