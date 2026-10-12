@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/teutonet/keycloak-chart/compare/v1.4.0...v1.5.0) (2026-10-12)
+
+
+### Features
+
+* **deps:** update all non-major dependencies ([#55](https://github.com/teutonet/keycloak-chart/issues/55)) ([49350bf](https://github.com/teutonet/keycloak-chart/commit/49350bf559465ac0bfee06d7f2ae2c2bc8cc6b17))
+
 ## [1.4.0](https://github.com/teutonet/keycloak-chart/compare/v1.3.0...v1.4.0) (2026-10-08)
 
 
